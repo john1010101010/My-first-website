@@ -1,1 +1,761 @@
+from pathlib import Path
 
+html = r'''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nairova | Premium Dried Herbs & Spices</title>
+
+    <meta name="description" content="Nairova supplies and exports premium dried herbs and spices, including marjoram, thyme, basil, cumin and lemongrass.">
+
+    <style>
+        :root {
+            --green-dark: #183b2a;
+            --green: #2f6b45;
+            --green-light: #dfeadd;
+            --cream: #f7f3e8;
+            --gold: #b58b45;
+            --white: #ffffff;
+            --text: #243129;
+            --muted: #68736c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--text);
+            background: var(--cream);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: min(1120px, 92%);
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(24, 59, 42, 0.97);
+            color: var(--white);
+        }
+
+        nav {
+            min-height: 74px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #d5b16d;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            font-size: 15px;
+            transition: color 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            color: #e2c887;
+        }
+
+        /* Landing page */
+        .hero {
+            min-height: calc(100vh - 74px);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 85% 20%, rgba(181, 139, 69, 0.28), transparent 28%),
+                linear-gradient(135deg, #183b2a 0%, #28583b 55%, #3d7650 100%);
+            color: var(--white);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border: 1px solid rgba(255,255,255,0.13);
+            border-radius: 50%;
+            right: -120px;
+            bottom: -180px;
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 760px;
+            padding: 90px 0;
+        }
+
+        .eyebrow {
+            color: #e2c887;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(46px, 7vw, 78px);
+            line-height: 1.04;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: #e2c887;
+        }
+
+        .hero p {
+            max-width: 650px;
+            color: #e9f0ea;
+            font-size: 19px;
+            margin-bottom: 35px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 25px;
+            border-radius: 5px;
+            font-weight: 700;
+            transition: 0.25s ease;
+        }
+
+        .btn-primary {
+            background: #d5ad62;
+            color: #183b2a;
+        }
+
+        .btn-primary:hover {
+            background: #e7c983;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            border: 1px solid rgba(255,255,255,0.7);
+            color: var(--white);
+        }
+
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--green-dark);
+        }
+
+        /* Intro */
+        .intro {
+            background: var(--white);
+            padding: 75px 0;
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 55px;
+            align-items: center;
+        }
+
+        .section-label {
+            color: var(--green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-family: Georgia, "Times New Roman", serif;
+            color: var(--green-dark);
+            font-size: clamp(34px, 5vw, 48px);
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+
+        .intro p {
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        .intro-card {
+            background: var(--green-light);
+            padding: 35px;
+            border-left: 5px solid var(--gold);
+        }
+
+        .intro-card strong {
+            display: block;
+            color: var(--green-dark);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        /* Products */
+        .products {
+            padding: 90px 0;
+            background: #f1eee3;
+        }
+
+        .section-heading {
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto 48px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .product-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 6px;
+            border-top: 4px solid var(--green);
+            box-shadow: 0 8px 25px rgba(24, 59, 42, 0.07);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 32px rgba(24, 59, 42, 0.12);
+        }
+
+        .product-icon {
+            font-size: 35px;
+            margin-bottom: 14px;
+        }
+
+        .product-card h3 {
+            color: var(--green-dark);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .product-card p {
+            color: var(--muted);
+        }
+
+        .other-products {
+            margin-top: 25px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .other-products strong {
+            color: var(--green-dark);
+        }
+
+        /* Why us */
+        .why-us {
+            padding: 90px 0;
+            background: var(--green-dark);
+            color: var(--white);
+        }
+
+        .why-us h2 {
+            color: var(--white);
+        }
+
+        .why-us .section-heading p {
+            color: #cdd9d0;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .why-card {
+            padding: 28px 20px;
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 5px;
+        }
+
+        .why-number {
+            color: #e2c887;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .why-card h3 {
+            margin: 12px 0 8px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 22px;
+        }
+
+        .why-card p {
+            color: #cdd9d0;
+            font-size: 14px;
+        }
+
+        /* Contact */
+        .contact {
+            padding: 90px 0;
+            background: var(--white);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .contact-info p {
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .contact-note {
+            margin-top: 25px;
+            padding: 20px;
+            background: var(--green-light);
+            color: var(--green-dark);
+            border-left: 4px solid var(--gold);
+        }
+
+        form {
+            display: grid;
+            gap: 14px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            border: 1px solid #d7ddd8;
+            border-radius: 4px;
+            padding: 14px;
+            font: inherit;
+            color: var(--text);
+            background: #fbfcfb;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        button {
+            border: 0;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        /* Footer */
+        footer {
+            background: #10271c;
+            color: #cdd9d0;
+            padding: 28px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        footer strong {
+            color: var(--white);
+        }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                min-height: 80vh;
+            }
+
+            .intro-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .why-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 45px;
+            }
+
+            .buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#home" class="logo">NAIRO<span>VA</span></a>
+
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#why-us">Why Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Landing / Hero -->
+        <section class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+
+                    <div class="eyebrow">
+                        Dried Herbs & Spices
+                    </div>
+
+                    <h1>
+                        Nature's finest flavors,
+                        <span>prepared for the world.</span>
+                    </h1>
+
+                    <p>
+                        Nairova supplies premium dried herbs and spices
+                        for international buyers, food businesses, and
+                        partners looking for consistent quality and
+                        dependable supply.
+                    </p>
+
+                    <div class="buttons">
+                        <a href="#products" class="btn btn-primary">
+                            Explore Products
+                        </a>
+
+                        <a href="#contact" class="btn btn-outline">
+                            Request a Quote
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section class="intro" id="about">
+            <div class="container">
+                <div class="intro-grid">
+
+                    <div>
+                        <div class="section-label">About Nairova</div>
+
+                        <h2>
+                            Quality herbs and spices, prepared for export.
+                        </h2>
+
+                        <p>
+                            Nairova is a practice export brand focused on
+                            supplying dried herbs and spices to customers
+                            who value quality, consistency, and reliable
+                            service.
+                        </p>
+                    </div>
+
+                    <div class="intro-card">
+                        <strong>From trusted supply to global markets.</strong>
+
+                        <p>
+                            Our product range starts with carefully selected
+                            dried herbs and can grow to meet the needs of
+                            importers, distributors, manufacturers, and
+                            food businesses.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Products -->
+        <section class="products" id="products">
+            <div class="container">
+
+                <div class="section-heading">
+                    <div class="section-label">Our Products</div>
+
+                    <h2>
+                        Selected herbs & spices
+                    </h2>
+
+                    <p>
+                        A focused range of dried products, with the
+                        flexibility to supply additional herbs and spices.
+                    </p>
+                </div>
+
+                <div class="product-grid">
+
+                    <article class="product-card">
+                        <div class="product-icon">🌿</div>
+                        <h3>Marjoram</h3>
+                        <p>
+                            Aromatic dried marjoram suitable for food
+                            production, seasoning, and wholesale supply.
+                        </p>
+                    </article>
+
+                    <article class="product-card">
+                        <div class="product-icon">🌱</div>
+                        <h3>Thyme</h3>
+                        <p>
+                            Carefully prepared dried thyme for culinary,
+                            manufacturing, and commercial applications.
+                        </p>
+                    </article>
+
+                    <article class="product-card">
+                        <div class="product-icon">🍃</div>
+                        <h3>Basil</h3>
+                        <p>
+                            Fragrant dried basil supplied for food
+                            businesses and international buyers.
+                        </p>
+                    </article>
+
+                </div>
+
+                <p class="other-products">
+                    <strong>Also available:</strong>
+                    Cumin, Lemongrass, and other dried herbs and spices
+                    according to customer requirements.
+                </p>
+
+            </div>
+        </section>
+
+        <!-- Why Us -->
+        <section class="why-us" id="why-us">
+            <div class="container">
+
+                <div class="section-heading">
+                    <div class="section-label">Why Nairova</div>
+
+                    <h2>
+                        Built around quality and dependable supply.
+                    </h2>
+
+                    <p>
+                        We aim to make sourcing dried herbs and spices
+                        straightforward for our international partners.
+                    </p>
+                </div>
+
+                <div class="why-grid">
+
+                    <div class="why-card">
+                        <div class="why-number">01</div>
+                        <h3>Quality Focus</h3>
+                        <p>
+                            We put product quality and consistency at the
+                            center of every order.
+                        </p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="why-number">02</div>
+                        <h3>Product Range</h3>
+                        <p>
+                            From core herbs to additional spices, we can
+                            support a broad range of sourcing needs.
+                        </p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="why-number">03</div>
+                        <h3>Export Mindset</h3>
+                        <p>
+                            Our website and service are designed around
+                            communication with international buyers.
+                        </p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="why-number">04</div>
+                        <h3>Reliable Service</h3>
+                        <p>
+                            Clear communication and dependable customer
+                            service are essential to long-term partnerships.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="contact" id="contact">
+            <div class="container">
+
+                <div class="contact-grid">
+
+                    <div>
+                        <div class="section-label">Contact</div>
+
+                        <h2>
+                            Let's talk about your next shipment.
+                        </h2>
+
+                        <div class="contact-info">
+                            <p>
+                                If you are interested in our dried herbs
+                                and spices, contact Nairova to discuss
+                                products, quantities, packaging, and
+                                export requirements.
+                            </p>
+
+                            <p>
+                                <strong>Email:</strong>
+                                your-email@example.com
+                            </p>
+
+                            <p>
+                                <strong>Phone:</strong>
+                                +20 XXX XXX XXXX
+                            </p>
+
+                            <p>
+                                <strong>Location:</strong>
+                                Egypt
+                            </p>
+                        </div>
+
+                        <div class="contact-note">
+                            The contact details above are placeholders
+                            for this practice project. Replace them with
+                            your real company information later.
+                        </div>
+                    </div>
+
+                    <form>
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Your Name"
+                            required
+                        >
+
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Your Email"
+                            required
+                        >
+
+                        <input
+                            type="text"
+                            name="company"
+                            placeholder="Company Name"
+                        >
+
+                        <textarea
+                            name="message"
+                            placeholder="Tell us what products and quantities you are interested in..."
+                            required
+                        ></textarea>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Send Inquiry
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>
+                © 2026 <strong>Nairova</strong>.
+                Dried Herbs & Spices.
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
+'''
+
+path = Path("/mnt/data/index.html")
+path.write_text(html, encoding="utf-8")
+print(path)
